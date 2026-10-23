@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Findly — Lost & Found</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">F</span><div><strong>findly</strong><small>Campus Lost & Found</small></div></div>
+      <div class="side-label">WORKSPACE</div>
+      <button class="nav-item active" data-view="overview"><span>▦</span> Overview</button>
+      <button class="nav-item" data-view="report"><span>＋</span> Report an item</button>
+      <button class="nav-item" data-view="matches"><span>⌕</span> Possible matches <span class="nav-count" id="matchCount">0</span></button>
+      <button class="nav-item" data-view="reports"><span>▤</span> Active reports</button>
+      <div class="sidebar-bottom"><div class="secure-dot"></div><div><strong>Privacy first</strong><small>Ownership evidence stays private</small></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">CAMPUS RECOVERY NETWORK</div><h1 id="pageTitle">Overview</h1></div>
+        <div class="top-actions"><span class="api-status"><i></i><span id="apiStatus">Connecting…</span></span><button class="button button-dark" data-go="report">＋ New report</button></div>
+      </header>
+
+      <section id="overviewView" class="view">
+        <div class="hero">
+          <div class="hero-copy"><span class="pill pill-light">A smarter way to reunite items</span><h2>Lost something?<br><em>Let's find it.</em></h2><p>Report what you remember. Findly compares available details and surfaces possible matches — without requiring a photo or a perfect description.</p><button class="button button-white" data-go="report">Create a report <span>↗</span></button></div>
+          <div class="hero-art"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="floating-card card-headphones"><span class="art-emoji">🎧</span><div><b>Headphones</b><small>Possible match</small></div><span class="match-chip">Review</span></div><div class="floating-card card-backpack"><span class="art-emoji">🎒</span><div><b>Backpack</b><small>Library · Today</small></div></div><div class="hero-spark">✦</div><div class="hero-circle">⌕</div></div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-top"><span>Active lost reports</span><span class="stat-icon purple">↗</span></div><strong id="lostStat">—</strong><small>Still searching for an owner</small></div>
+          <div class="stat-card"><div class="stat-top"><span>Found items</span><span class="stat-icon mint">⌕</span></div><strong id="foundStat">—</strong><small>Waiting to be claimed</small></div>
+          <div class="stat-card"><div class="stat-top"><span>Possible matches</span><span class="stat-icon amber">✦</span></div><strong id="possibleStat">—</strong><small>Require human verification</small></div>
+        </div>
+
+        <div class="section-heading"><div><h3>Recent activity</h3><p>Latest reports in your campus network</p></div><button class="text-button" data-go="reports">View all →</button></div>
+        <div id="recentReports" class="report-list"><div class="empty-state">Loading reports…</div></div>
+        <div class="notice"><span class="notice-icon">✳</span><div><b>Matching is not ownership verification</b><p>A similarity score helps prioritize candidates. An authorized review is required before an item is returned.</p></div></div>
+      </section>
+
+      <section id="reportView" class="view hidden">
+        <div class="form-intro"><div class="eyebrow">QUICK REPORT · ABOUT 1 MINUTE</div><h2>Start with what you know.</h2><p>Photo and distinctive features are optional. Unknown details won't block your report.</p></div>
+        <div class="form-layout">
+          <form id="itemForm" class="form-card">
+            <div class="form-section">
+              <div class="section-title"><span class="step-number">01</span><div><h3>What happened?</h3><p>Choose the type of report.</p></div></div>
+              <div class="segmented"><label><input type="radio" name="report_type" value="lost" checked><span>I've lost an item</span></label><label><input type="radio" name="report_type" value="found"><span>I've found an item</span></label></div>
+            </div>
+            <div class="form-section">
+              <div class="section-title"><span class="step-number">02</span><div><h3>Item details</h3><p>Share the basics; leave anything unknown blank.</p></div></div>
+              <label class="field-label" for="item_name">Item name <b>*</b></label><input id="item_name" name="item_name" required placeholder="e.g. wireless headphones">
+              <div class="two-cols"><div><label class="field-label" for="category">Category</label><select id="category" name="category"><option value="">Choose if known</option><option>Electronics</option><option>Bags</option><option>Clothing</option><option>Keys</option><option>Books & stationery</option><option>Accessories</option><option>Other</option></select></div><div><label class="field-label" for="colour">Colour</label><input id="colour" name="colour" placeholder="e.g. black"></div></div>
+              <label class="field-label" for="shape">Shape / design <span class="optional">Optional</span></label><input id="shape" name="shape" placeholder="e.g. over-ear, curved">
+              <label class="field-label">Photo <span class="optional">Optional</span></label>
+              <label class="upload-zone" for="image"><span class="upload-icon">↑</span><span><b>Choose an image</b><small>JPG, PNG or WEBP · Up to 8 MB</small></span><span class="upload-action">Browse</span><input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"></label>
+              <div id="imagePreview" class="image-preview hidden"></div>
+              <div class="ai-note"><span>✦</span><div><b>AI image analysis isn't connected yet</b><p>Uploaded images are stored, but this starter build does not claim to recognize them. The owner-entered fields are used for matching.</p></div></div>
+            </div>
+            <div class="form-section">
+              <div class="section-title"><span class="step-number">03</span><div><h3>Where and when?</h3><p>Approximate information is enough.</p></div></div>
+              <label class="field-label" for="location">Location</label><input id="location" name="location" placeholder="e.g. College Library">
+              <label class="field-label" for="event_date"><span id="dateLabel">Date lost</span></label><input id="event_date" name="event_date" type="date">
+              <div class="two-cols"><div><label class="field-label" for="time_start">Time from</label><input id="time_start" name="time_start" type="time"></div><div><label class="field-label" for="time_end">Time to</label><input id="time_end" name="time_end" type="time"></div></div>
+            </div>
+            <div class="form-section">
+              <div class="section-title"><span class="step-number">04</span><div><h3>Distinctive features</h3><p>Useful for verification, but never required to report.</p></div></div>
+              <div class="feature-chips"><label><input type="checkbox" value="Scratch" class="feature-type"><span>Scratch</span></label><label><input type="checkbox" value="Sticker" class="feature-type"><span>Sticker</span></label><label><input type="checkbox" value="Engraving" class="feature-type"><span>Engraving</span></label><label><input type="checkbox" value="Serial number" class="feature-type"><span>Serial number</span></label><label><input type="checkbox" value="Other" class="feature-type"><span>Other</span></label></div>
+              <label class="field-label" for="special_description">Describe any feature you remember <span class="optional">Optional</span></label><textarea id="special_description" rows="2" placeholder="e.g. small scratch on the left side"></textarea>
+              <label class="check-row"><input id="noFeature" type="checkbox"><span>I don't remember any distinctive features.</span></label>
+              <label class="field-label" for="public_description">Public description <span class="optional">Optional</span></label><textarea id="public_description" name="public_description" rows="2" placeholder="General details that can be shown in a listing"></textarea>
+              <label class="field-label" for="private_evidence">Private verification clue <span class="optional">Optional · hidden from listings</span></label><textarea id="private_evidence" name="private_evidence" rows="2" placeholder="Do not enter passwords or highly sensitive personal data"></textarea>
+            </div>
+            <div class="form-footer"><span>🔒 Private clues aren't shown in public report listings.</span><button class="button button-dark" type="submit" id="submitBtn">Submit report <span>→</span></button></div>
+          </form>
+          <aside class="form-aside"><div class="aside-card"><span class="aside-symbol">✦</span><h3>Incomplete is okay.</h3><p>You don't need to remember everything. We use available details, keep unknowns as unknown, and keep searching as new reports arrive.</p><div class="aside-rule"></div><div class="aside-point"><span>01</span><div><b>No photo? No problem.</b><small>Text-based matching still works.</small></div></div><div class="aside-point"><span>02</span><div><b>No unique feature?</b><small>Other verification evidence can be considered.</small></div></div><div class="aside-point"><span>03</span><div><b>Possible match found?</b><small>Ownership must be verified separately.</small></div></div></div></aside>
+        </div>
+      </section>
+
+      <section id="matchesView" class="view hidden">
+        <div class="section-heading page-section-heading"><div><h2>Possible matches</h2><p>Ranked candidates, not proof of ownership.</p></div><button class="button button-outline" id="refreshMatches">↻ Refresh</button></div>
+        <div id="matchesList" class="match-list"><div class="empty-state">Loading matches…</div></div>
+      </section>
+
+      <section id="reportsView" class="view hidden">
+        <div class="section-heading page-section-heading"><div><h2>Active reports</h2><p>Unresolved lost and found items stay searchable.</p></div><div class="filter-row"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="lost">Lost</button><button class="filter" data-filter="found">Found</button></div></div>
+        <div id="allReports" class="report-list"><div class="empty-state">Loading reports…</div></div>
+      </section>
+      <footer>FINDLY · CAMPUS LOST & FOUND <span>Prototype · Keep private evidence private</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <div id="modalRoot"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
