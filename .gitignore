@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+lost_found.db
+uploads/*
+!uploads/.gitkeep
